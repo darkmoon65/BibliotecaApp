@@ -198,7 +198,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="creacion_tablas_biblioteca.sql" />
+    <Content Include="insertar_datos.sql" />
     <Content Include="Service1.svc" />
+    <Content Include="SPs_biblioteca.sql" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
