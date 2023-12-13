@@ -5,7 +5,15 @@ VisualStudioVersion = 16.0.31321.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "servicioBiblioteca", "servicioBiblioteca\servicioBiblioteca.csproj", "{A6231154-1BCB-4C6C-8756-B53868EFBF49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "aplicacionWebMVC", "aplicacionWebMVC\aplicacionWebMVC.csproj", "{239E9301-32AA-460F-B7EF-3F52293FFFC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "aplicacionWebMVC", "aplicacionWebMVC\aplicacionWebMVC.csproj", "{239E9301-32AA-460F-B7EF-3F52293FFFC3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extras", "extras", "{D3DDAA16-5184-4EFC-A5FB-9EAD1C12CF63}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Desktop\creacion_tablas_biblioteca.sql = ..\..\..\Desktop\creacion_tablas_biblioteca.sql
+		..\..\..\Desktop\insertar_datos.sql = ..\..\..\Desktop\insertar_datos.sql
+		readme.txt = readme.txt
+		..\..\..\Desktop\SPs_biblioteca.sql = ..\..\..\Desktop\SPs_biblioteca.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
