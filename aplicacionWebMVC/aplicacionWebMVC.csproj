@@ -9,6 +9,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\chico1.png" />
+    <None Include="wwwroot\logo1.png" />
+    <None Include="wwwroot\Optima-ExtraBlack.otf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.32" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
