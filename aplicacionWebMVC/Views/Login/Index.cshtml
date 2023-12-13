@@ -1,0 +1,53 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@model aplicacionWebMVC.Models.LoginViewModel
+
+<div>
+    <div class="form-group">
+        <label></label>
+        <input type="text" name="usuario" id="usuario"/>
+    </div>
+    <div class="form-group">
+        <label></label>
+        <input type="password" name="password" id="password" />
+    </div>
+    <div class="form-group">
+        <button id="btnSubmit" class="btn btn-primary" >Iniciar Sesión</button>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#btnSubmit').click(function (event) {
+            event.preventDefault();
+
+            var formData = {
+                Usuario: $('#usuario').val(),
+                Password: $('#password').val()
+            };
+
+            $.ajax({
+                url: '/Login/Login',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (data) {
+                    console.log(data.token);
+                    localStorage.setItem("token", data.token);
+                    window.location.href = '/Book';
+                },
+                error: function (error) {
+                    console.log(error.responseText);
+                }
+            });
+        });
+    });
+</script>
+
