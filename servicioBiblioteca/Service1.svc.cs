@@ -37,7 +37,26 @@ namespace servicioBiblioteca
            
         public bool AutenticarUsuario(string user, string pass)
         {
-            return true;
+            DataSet DST = new DataSet();
+            SqlCommand cmd = new SqlCommand("GetUserById", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@varEmail", SqlDbType.VarChar).Value = user;
+            cmd.Parameters.Add("@varPassword", SqlDbType.VarChar).Value = pass;
+
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
+                adapter.Fill(DST);
+            }
+            if (DST.Tables.Count > 0 && DST.Tables[0].Rows.Count > 0)
+            {
+                DataRow row = DST.Tables[0].Rows[0];
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+  
         }
 
 

@@ -27,14 +27,30 @@ CREATE TABLE Books (
 );
 
 CREATE TABLE Reservations (
+    idReservation INT PRIMARY KEY IDENTITY(1,1),
     idUser INT,
     idBook INT,
     dmeDateReservation DATETIME,
+	dmeDateReservationEnd DATETIME,
     instStatus INT,
     dmeDateCreate DATETIME,
     dmeDateUpdate DATETIME,
     isActiver BIT,
-    PRIMARY KEY (idUser, idBook),
     FOREIGN KEY (idUser) REFERENCES Users(idUser),
+    FOREIGN KEY (idBook) REFERENCES Books(idBook)
+);
+
+CREATE TABLE WaitReservations (
+    idWaitReservation INT PRIMARY KEY IDENTITY(1,1),
+    idBook INT,
+    idUser INT,
+    varPriority VARCHAR(2),
+    dmeDateReservation DATETIME,
+    dmeDateReservationEnd DATETIME,
+    instStatus INT,
+    dmeDateCreate DATETIME,
+    dmeDateUpdate DATETIME,
+    isActive BIT,
+	FOREIGN KEY (idUser) REFERENCES Users(idUser),
     FOREIGN KEY (idBook) REFERENCES Books(idBook)
 );

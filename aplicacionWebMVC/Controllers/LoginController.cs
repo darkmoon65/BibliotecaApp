@@ -22,11 +22,11 @@ namespace aplicacionWebMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login([FromBody]LoginViewModel model)
         {
             Service1 servicio = new Service1();
 
-            if (servicio.AutenticarUsuario("usuario1", "contraseña"))
+            if (servicio.AutenticarUsuario(model.Usuario, model.Password))
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes("claveasdasdsadsadsadsadsadsadsadsadadsadsadsadas");
@@ -44,7 +44,7 @@ namespace aplicacionWebMVC.Controllers
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 var tokenString = tokenHandler.WriteToken(token);
 
-                return Json(new { Token = tokenString });
+                return Json(new { Token = tokenString, msg = "Correcto" });
             }
             else
             {

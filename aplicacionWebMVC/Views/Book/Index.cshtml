@@ -17,6 +17,8 @@
         </tr>
     </thead>
     <tbody>
+        <a href="#" id="link">Link de redireccion a angular</a>
+        <br />
         @foreach (DataRow row in Model.Rows)
         {
             <tr>
@@ -32,6 +34,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         var token = localStorage.getItem('token');
+        $("#link").attr("href", "http://localhost:4200?token="+token);
 
         if (!token) {
             window.location.href = '/Login';
