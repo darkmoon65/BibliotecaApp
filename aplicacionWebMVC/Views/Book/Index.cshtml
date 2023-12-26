@@ -26,8 +26,66 @@
                 <td>@row["varTitle"]</td>
                 <td>@row["instStatus"]</td>
                 <td>@row["isActiver"]</td>
+                <td>
+                    @{
+                        var instStatusValue = row["instStatus1"];
+                        if (instStatusValue != null && !string.IsNullOrEmpty(instStatusValue.ToString()))
+                        {
+                            int instStatus = 0;
+                            if (int.TryParse(instStatusValue.ToString(), out instStatus))
+                            {
+                                if (instStatus == 1)
+                                {
+                                    <button onclick="reservacion(@row["idBook"])" type="button" class="btn btn-danger" id="reservado" disabled>Reservado</button>
+                                }
+                                else
+                                {
+                                    <button onclick="reservacionFree(@row["idBook"])" type="button" class="btn btn-success" id="NoReservado">No Reservado</button>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <button onclick="reservacionFree(@row["idBook"])" type="button" class="btn btn-success" id="NoReservado">No Reservado</button>
+                        }
+                    }
+                </td>
             </tr>
         }
+        <div class="modal" id="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Mensaje</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="contenido"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="modalFree" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Mensaje</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input id="idBookFree" style="display:none"/>
+                        <p id="contenidoFree"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="enviar()">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </tbody>
 </table>
 
@@ -40,4 +98,90 @@
             window.location.href = '/Login';
         }
     });
+    function reservacion(idBook) {
+        event.preventDefault();
+
+        $("#contenido").text('NO ES POSIBLE RESERVAR EL LIBRO TITULO DEL LIBRO');
+        $("#modal").modal('show');
+
+        let fechaActual = new Date()
+        var formData = {
+            idUser: 1,
+            idBook: idBook,
+            dmeDateReservation: fechaActual,
+            dmeDateReservationEnd: fechaActual.setHours(fechaActual.getHours() + 24),
+            instStatus: 1,
+            isActiver: 1
+        };
+
+        $.ajax({
+            url: '/Login/Login',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (data) {
+                if (data.msg == "Invalido") {
+                    window.location.href = '/';
+                } else {
+                    console.log(data.token);
+                    localStorage.setItem("token", data.token);
+                    window.location.href = '/Book';
+                }
+            },
+            error: function (error) {
+                console.log(error.responseText);
+            }
+        });
+    };
+
+    function reservacionFree(idBook) {
+        event.preventDefault();
+
+        $("#contenidoFree").text('ESTA SEGURO QUE DESEA RESERVAR ESTE LIBRO');
+        $("#modalFree").modal('show');
+
+        $("#idBookFree").val(idBook);
+    };
+
+    function enviar() {
+        let idBook = parseInt($("#idBookFree").val());
+        let fechaActual = new Date()
+        var formData = {
+            IdUser: 1,
+            IdBook: idBook,
+            DateReservation: fechaActual,
+            DateReservationEnd: fechaActual,
+            DateCreate: new Date(),
+            DateUpdate: new Date(),
+            Status: 1,
+            IsActive: true
+        };
+
+        $.ajax({
+            url: '/Book/reservar',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: async function (data) {
+                if (data.msg == "reservado") {
+                    await fetch('http://localhost:3000/event/create', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user: "cesar", description: `Se reservó el libro ${idBook} con exito`,
+                            registered: new Date()
+                        })
+                    })
+                    window.location.href = '/book';
+                } else {
+                    alert("Hubo un error con la reserva")
+                }
+            },
+            error: function (error) {
+                console.log(error.responseText);
+            }
+        });
+    }
 </script>

@@ -66,8 +66,27 @@ GO
 
 CREATE PROCEDURE GetAllBooks
 AS
-    SELECT * FROM Books;
-GO
+BEGIN
+     WITH LastReservation AS (
+        SELECT
+            R.*,
+            ROW_NUMBER() OVER (PARTITION BY R.idBook ORDER BY R.dmeDateReservationEnd DESC) AS RowNum
+        FROM
+            Reservations R
+    )
+    SELECT
+        B.*,
+        RR.idReservation,
+        RR.idUser AS ReservationUserID,
+        RR.dmeDateReservation,
+        RR.dmeDateReservationEnd,
+        RR.instStatus
+    FROM
+        Books B
+    LEFT JOIN
+        LastReservation RR ON B.idBook = RR.idBook AND RR.RowNum = 1;
+END;
+
 
 
 CREATE PROCEDURE GetBookById
@@ -232,7 +251,6 @@ BEGIN
     WHERE varPriority = @usuarioMasProximo;
 END;
 
-EXEC ReleaseBooks;
 
 EXEC msdb.dbo.sp_add_job
     @job_name = N'ReservaAutomaticaCronJob',

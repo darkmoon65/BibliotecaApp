@@ -29,6 +29,8 @@ namespace servicioBiblioteca
         [OperationContract]
         bool AutenticarUsuario(string a, string b);
 
+        [OperationContract]
+        bool InsertReservation(ReservationDTO reservation);
     }
 
 
@@ -83,6 +85,7 @@ namespace servicioBiblioteca
         public int IdUser { get; set; }
         public int IdBook { get; set; }
         public DateTime DateReservation { get; set; }
+        public DateTime DateReservationEnd { get; set; }
         public int Status { get; set; }
         public DateTime DateCreate { get; set; }
         public DateTime DateUpdate { get; set; }

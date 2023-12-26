@@ -58,7 +58,32 @@ namespace servicioBiblioteca
             }
   
         }
+        public bool InsertReservation(ReservationDTO reservation)
+        {
+            try
+            {
+                DataSet DST = new DataSet();
+                SqlCommand cmd = new SqlCommand("InsertReservation", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@idUser", SqlDbType.VarChar).Value = reservation.IdUser;
+                cmd.Parameters.Add("@idBook", SqlDbType.VarChar).Value = reservation.IdBook;
+                cmd.Parameters.Add("@dmeDateReservation", SqlDbType.Date).Value = reservation.DateReservation;
+                cmd.Parameters.Add("@dmeDateReservationEnd", SqlDbType.Date).Value = reservation.DateReservationEnd;
+                cmd.Parameters.Add("@instStatus", SqlDbType.Int).Value = reservation.Status;
+                cmd.Parameters.Add("@isActiver", SqlDbType.Bit).Value = reservation.IsActive;
 
+
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(DST);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         public string GetData(int value)
         {
@@ -82,5 +107,7 @@ namespace servicioBiblioteca
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

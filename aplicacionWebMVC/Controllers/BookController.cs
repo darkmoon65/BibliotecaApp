@@ -77,25 +77,16 @@ namespace aplicacionWebMVC.Controllers
             }
         }
 
-        // GET: BookController/Delete/5
-        public ActionResult Delete(int id)
+
+        [HttpPost]
+        public ActionResult Reservar([FromBody] ReservationDTO model)
         {
-            return View();
+            Service1 servicio = new Service1();
+
+            servicio.InsertReservation(model);
+
+            return Json(new { msg = "reservado" });
         }
 
-        // POST: BookController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }
